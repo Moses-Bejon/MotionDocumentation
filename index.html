@@ -89,6 +89,7 @@
             There is a single controller which manages the entire application.
             The controller manages all interactions between views and models.
             A view cannot directly modify a model and a model cannot directly interact with a view.
+            However, a view is able to read the attributes of a model.
         </p>
         <p>
             Views interact with the controller by accessing the global controller and subscribing to their interest.
@@ -99,8 +100,9 @@
         <p>
             A controller can only interact with views that have subscribed to it.
             A controller can at any point modify or run functions on a model.
-            However, a model can never call functions on the controller.
+            However, a model can never call functions on the controller or any views.
             The only means by which a model can interact with the controller is by returning outputs when the controller calls a function on it.
+            A model only speaks when spoken to.
         </p>
     </section>
 
