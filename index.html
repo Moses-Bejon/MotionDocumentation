@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Default favicon (for browsers that don't support media queries in link tags) -->
+    <link rel="icon" href="assets/lightLogo.svg" type="image/x-icon">
+    <!-- Light mode favicon -->
+    <link rel="icon" href="assets/lightLogo.svg" type="image/x-icon" media="(prefers-color-scheme: light)">
+    <!-- Dark mode favicon -->
+    <link rel="icon" href="assets/darkLogo.svg" type="image/x-icon" media="(prefers-color-scheme: dark)">
+
+    <title>Motion Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0 2rem;
+            line-height: 1.6;
+        }
+        header {
+            background: #222;
+            color: white;
+            padding: 1rem 2rem;
+            text-align: center;
+        }
+        nav {
+            background: #f4f4f4;
+            padding: 1rem;
+            margin: 2rem 0;
+            border-left: 4px solid #444;
+        }
+        nav h2 {
+            margin-top: 0;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            margin: 0.5rem 0;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #007BFF;
+        }
+        section {
+            margin-bottom: 3rem;
+        }
+        h2 {
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 0.5rem;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background: #eee;
+            color: #555;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Motion Documentation</h1>
+    <p>Welcome to the official developer documentation</p>
+</header>
+
+<nav>
+    <h2>Table of Contents</h2>
+    <ol>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#controller">Controller</a></li>
+    </ol>
+</nav>
+
+<main>
+    <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+            Motion is a web-based animation software which runs entirely on the client-side.
+            Its graphics are powered by SVG elements.
+            When you open Motion, you open to a tile-based window manager.
+            Each window contains a view from the underlying model-view-controller architecture.
+        </p>
+        <p>
+            The system uses both many views (canvases, renderers, shape editors) as well as many models (types of shapes, tweens).
+            There is a single controller which manages the entire application.
+            The controller manages all interactions between views and models.
+            A view cannot directly modify a model and a model cannot directly interact with a view.
+        </p>
+        <p>
+            Views interact with the controller by accessing the global controller and subscribing to their interest.
+            For example, a canvas subscribes to the shape currently on the screen, while a shape editor only subscribes to shapes that are selected.
+            Views can further interact with the controller, for example if they receive an input from the user and want to relay this.
+            However, it is the responsibility of the controller to validate the functions that views call on it.
+        </p>
+        <p>
+            A controller can only interact with views that have subscribed to it.
+            A controller can at any point modify or run functions on a model.
+            However, a model can never call functions on the controller.
+            The only means by which a model can interact with the controller is by returning outputs when the controller calls a function on it.
+        </p>
+    </section>
+
+    <section id="controller">
+        <h2>Controller</h2>
+
+        <p>The controller lives in the following three states:</p>
+        <ol>
+            <li>idle</li>
+            <li>receiving action</li>
+            <li>playing</li>
+        </ol>
+
+        <p>
+            While the controller is idle it can begin playing or it can begin receiving an action.
+            When the controller is receiving an action, it is waiting for a view to give it steps on what to do.
+            This allows it to differentiate when an action starts and ends, and can undo/redo accordingly.
+            Playing means the animation is currently being previewed, and as such no actions are allowed.
+        </p>
+
+        <p>The following functions can be called on the controller by views:</p>
+        <ol>
+            <li>beginAction - enters the receiving action state</li>
+            <li>takeStep - does something specified by parameters</li>
+            <li>endAction - exits the receiving action state</li>
+            <li>subscribeTo - the controller adds this to one of its list of subscribers based on parameters</li>
+            <li>play - enters the playing state</li>
+        </ol>
+
+        <p>
+            The controller will be able to call a variety of functions on views based on what they subscribed to.
+            It is the responsibility of the controller to both (a) validate function calls made to it and (b)
+            ensure it makes correct function calls to views and models (i.e. views and models do not need to validate
+            controller function calls).
+        </p>
+    </section>
+</main>
+
+</body>
+</html>
